@@ -12,7 +12,6 @@ open Feliz.MaterialUI
 open Feliz.MaterialUI.menu
 open Fable.React
 
-
 type Page =
     | Home
     | NotFound
@@ -22,17 +21,18 @@ type LoginState =
     | LoginFailed
     | LoginSucceeded
     
-
+type LoginSectionState =
+    | Empty
+    | WaitingForInput of username:string * password: string
+    | LoginFailed     of username:string * password: string
+    | LoginSucceeded
+    
 type Model = {
-    username:   string
-    password:   string
-    loginState: LoginState
+    loginSection: LoginSectionState
     currentUrl: string list
 }
     
 let initModel = {
-    username = ""
-    password = ""
-    loginState = WaitingForInput
+    loginSection = Empty
     currentUrl = Router.currentUrl() 
 }
