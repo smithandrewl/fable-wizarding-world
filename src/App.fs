@@ -1,14 +1,40 @@
 module App
 
-open Browser.Dom
+open Elmish
+open Elmish.React
+open Feliz
 
-// Mutable variable to count the number of times we clicked the button
-let mutable count = 0
+open Feliz.MaterialUI
+open Feliz.MaterialUI.menu
+open Fable.React
 
-// Get a reference to our button and cast the Element to an HTMLButtonElement
-let myButton = document.querySelector(".my-button") :?> Browser.Types.HTMLButtonElement
+open State.Store
+open State.Reducers
 
-// Register our listener
-myButton.onclick <- fun _ ->
-    count <- count + 1
-    myButton.innerText <- sprintf "You clicked: %i time(s)" count
+open Components.Login
+    
+
+let app = React.functionComponent( fun (model: Model, dispatch) ->
+    Mui.container  [
+        container.maxWidth.xs
+        
+        prop.children [      
+            loginComponent (model, dispatch)
+            
+            Html.h1 [
+                prop.text 
+                    (match model.loginState with
+                    | WaitingForInput -> ""
+                    | LoginFailed     -> "Login Failed"
+                    | LoginSucceeded  -> "Login Succeeded")
+            ]
+        ]
+    ]
+)
+
+let view (model: Model) (dispatch: Msg -> Unit) =
+    app (model, dispatch)
+
+Program.mkSimple  (fun _ -> initModel) update view
+|> Program.withReactSynchronous "root"
+|> Program.run
