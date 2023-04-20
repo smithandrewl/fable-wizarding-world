@@ -3,21 +3,37 @@ module State.Reducers
 open State.Store
 
 type Msg =
-    | FormUpdated     of string * string
+    | LoginFormUpdated of string * string
     | LoginSubmission
+    | LoginSucceeded
+    | LoginFailed
     | UrlChanged of string list
 
 let update msg (model: Model) =
     match msg with
-    | FormUpdated(username, password) ->
+    | LoginFormUpdated(username, password) ->
         {
             model with
-                username = username
-                password = password
+                loginSection = WaitingForInput(username, password)
         }
     | LoginSubmission ->
-        if model.username = "a" && model.password = "a" then
-            { model with loginState = LoginState.LoginSucceeded }
-        else
-            { model with loginState = LoginState.LoginFailed }
+        match model.loginSection with
+        | Empty                            -> model // If the user didn't fill out the info and hit submit do nothing
+        | LoginSectionState.LoginSucceeded -> model // If the user is already logged in do nothing
+        | LoginSectionState.LoginFailed (username, password) -> // If a login attempt failed and this is a new submission
+                                                                // Switch the state to waiting for input
+            {
+                model with loginSection = LoginSectionState.WaitingForInput(username, password)
+            }
+        | WaitingForInput(username, password) ->
+            if username = "a" && password = "a" then
+                {
+                    model with loginSection = LoginSectionState.LoginSucceeded 
+                    
+                }
+            else
+                {
+                    model with loginSection = LoginSectionState.LoginFailed(username, password)
+                }
+                
     | UrlChanged(page) -> { model with currentUrl =  page }
