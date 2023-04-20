@@ -5,6 +5,7 @@ open State.Store
 type Msg =
     | FormUpdated     of string * string
     | LoginSubmission
+    | UrlChanged of string list
 
 let update msg (model: Model) =
     match msg with
@@ -19,3 +20,4 @@ let update msg (model: Model) =
             { model with loginState = LoginState.LoginSucceeded }
         else
             { model with loginState = LoginState.LoginFailed }
+    | UrlChanged(page) -> { model with currentUrl =  page }

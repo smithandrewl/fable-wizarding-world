@@ -2,7 +2,9 @@ module App
 
 open Elmish
 open Elmish.React
+
 open Feliz
+open Feliz.Router
 
 open Feliz.MaterialUI
 open Feliz.MaterialUI.menu
@@ -32,9 +34,23 @@ let app = React.functionComponent( fun (model: Model, dispatch) ->
     ]
 )
 
-let view (model: Model) (dispatch: Msg -> Unit) =
-    app (model, dispatch)
 
+let view (model: Model) (dispatch: Msg -> Unit) =
+    let currentPage =
+        match model.currentUrl with
+        | [] -> app(model, dispatch)
+        | _ ->
+            Html.div [
+                Html.h1 "404 not found"
+            ]
+    
+    React.router [
+        router.onUrlChanged (UrlChanged >> dispatch)
+        router.children [
+            currentPage
+        ]
+    ]
+    
 Program.mkSimple  (fun _ -> initModel) update view
 |> Program.withReactSynchronous "root"
 |> Program.run
