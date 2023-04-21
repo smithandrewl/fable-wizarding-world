@@ -51,6 +51,6 @@ let view (model: Model) (dispatch: Msg -> Unit) =
         ]
     ]
     
-Program.mkSimple  (fun _ -> initModel) update view
+Program.mkProgram  (fun _ -> initModel, Cmd.none) update view
 |> Program.withReactSynchronous "root"
 |> Program.run

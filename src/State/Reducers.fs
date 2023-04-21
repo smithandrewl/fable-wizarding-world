@@ -1,6 +1,7 @@
 module State.Reducers
 
 open State.Store
+open Elmish
 
 type Msg =
     | LoginFormUpdated of string * string
@@ -16,20 +17,15 @@ let update msg (model: Model) =
             model with
                 loginSection =
                     { model.loginSection with username = username; password = password }
-        }
+        }, Cmd.none
     | LoginSubmission ->
-        match model.loginSection.state with
-        | WaitingForInput -> // If a login attempt failed and this is a new submission
-            if model.loginSection.username = "a" && model.loginSection.password = "a" then
-                {
-                    model with loginSection = { model.loginSection with state = LoginState.LoginSucceeded }
-                    
-                }
-            else
-                {
-                    model with loginSection = { model.loginSection with state = LoginState.LoginFailed }
-                }
-        | LoginState.LoginSucceeded -> model
-        | LoginState.LoginFailed -> model
+        if model.loginSection.username = "a" && model.loginSection.password = "a" then
+            {
+                model with loginSection = { model.loginSection with state = LoginState.LoginSucceeded }
                 
-    | UrlChanged(page) -> { model with currentUrl =  page }
+            }, Cmd.none
+        else
+            {
+                model with loginSection = { model.loginSection with state = LoginState.LoginFailed }
+            }, Cmd.none
+    | UrlChanged(page) -> { model with currentUrl =  page }, Cmd.none
