@@ -19,5 +19,6 @@
 
     <Compile Include="Components\Login.fs" />
     <Compile Include="App.fs" />
+    <Folder Include="Pages\" />
   </ItemGroup>
 </Project>

@@ -13,7 +13,7 @@ let loginComponent =
             prop.children [
                 Mui.textField [
                     prop.label "Username"
-                    prop.onChange  (fun (username) -> dispatch (Msg.FormUpdated(username, model.password)))
+                    prop.onChange  (fun (username) -> dispatch (Msg.LoginFormUpdated(username, model.loginSection.password)))
                     textField.variant.outlined
                     textField.margin.normal
                     textField.fullWidth true
@@ -21,7 +21,7 @@ let loginComponent =
                 
                 Mui.textField [
                     prop.label "Password"
-                    prop.onChange (fun(password) -> dispatch (Msg.FormUpdated(model.username, password)))
+                    prop.onChange (fun(password) -> dispatch (Msg.LoginFormUpdated(model.loginSection.username, password)))
                     textField.variant.outlined
                     textField.fullWidth true
                     

@@ -21,11 +21,11 @@ type LoginState =
     | LoginFailed
     | LoginSucceeded
     
-type LoginSectionState =
-    | Empty
-    | WaitingForInput of username:string * password: string
-    | LoginFailed     of username:string * password: string
-    | LoginSucceeded
+type LoginSectionState = {
+    username: string
+    password: string
+    state: LoginState
+}
     
 type Model = {
     loginSection: LoginSectionState
@@ -33,6 +33,11 @@ type Model = {
 }
     
 let initModel = {
-    loginSection = Empty
+    loginSection = {
+        username = ""
+        password = ""
+        state = WaitingForInput
+    }
+    
     currentUrl = Router.currentUrl() 
 }

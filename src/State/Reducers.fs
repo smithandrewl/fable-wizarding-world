@@ -14,26 +14,22 @@ let update msg (model: Model) =
     | LoginFormUpdated(username, password) ->
         {
             model with
-                loginSection = WaitingForInput(username, password)
+                loginSection =
+                    { model.loginSection with username = username; password = password }
         }
     | LoginSubmission ->
-        match model.loginSection with
-        | Empty                            -> model // If the user didn't fill out the info and hit submit do nothing
-        | LoginSectionState.LoginSucceeded -> model // If the user is already logged in do nothing
-        | LoginSectionState.LoginFailed (username, password) -> // If a login attempt failed and this is a new submission
-                                                                // Switch the state to waiting for input
-            {
-                model with loginSection = LoginSectionState.WaitingForInput(username, password)
-            }
-        | WaitingForInput(username, password) ->
-            if username = "a" && password = "a" then
+        match model.loginSection.state with
+        | WaitingForInput -> // If a login attempt failed and this is a new submission
+            if model.loginSection.username = "a" && model.loginSection.password = "a" then
                 {
-                    model with loginSection = LoginSectionState.LoginSucceeded 
+                    model with loginSection = { model.loginSection with state = LoginState.LoginSucceeded }
                     
                 }
             else
                 {
-                    model with loginSection = LoginSectionState.LoginFailed(username, password)
+                    model with loginSection = { model.loginSection with state = LoginState.LoginFailed }
                 }
+        | LoginState.LoginSucceeded -> model
+        | LoginState.LoginFailed -> model
                 
     | UrlChanged(page) -> { model with currentUrl =  page }

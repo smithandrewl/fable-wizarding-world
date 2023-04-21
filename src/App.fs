@@ -25,10 +25,10 @@ let app = React.functionComponent( fun (model: Model, dispatch) ->
             
             Html.h1 [
                 prop.text 
-                    (match model.loginState with
-                    | WaitingForInput -> ""
-                    | LoginFailed     -> "Login Failed"
-                    | LoginSucceeded  -> "Login Succeeded")
+                    (match model.loginSection.state with
+                    | LoginState.WaitingForInput -> ""
+                    | LoginState.LoginFailed     -> "Login Failed"
+                    | LoginState.LoginSucceeded  -> "Login Succeeded")
             ]
         ]
     ]
