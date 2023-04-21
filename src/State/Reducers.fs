@@ -3,6 +3,15 @@ module State.Reducers
 open State.Store
 open Elmish
 
+open Elmish
+open Elmish.React
+
+open Feliz
+open Feliz.Router
+
+open State.Store
+
+
 type Msg =
     | LoginFormUpdated of string * string
     | LoginSubmission
@@ -23,9 +32,10 @@ let update msg (model: Model) =
             {
                 model with loginSection = { model.loginSection with state = LoginState.LoginSucceeded }
                 
-            }, Cmd.none
+            }, Cmd.ofMsg LoginSucceeded
         else
             {
                 model with loginSection = { model.loginSection with state = LoginState.LoginFailed }
-            }, Cmd.none
+            }, Cmd.ofMsg LoginFailed
     | UrlChanged(page) -> { model with currentUrl =  page }, Cmd.none
+    | LoginSucceeded -> model, Cmd.navigate("home")
