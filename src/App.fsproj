@@ -20,6 +20,8 @@
     <Compile Include="Components\Login.fs" />
 
     <Compile Include="Pages\LoginPage.fs" />
+
+    <Compile Include="Pages\HomePage.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
 </Project>

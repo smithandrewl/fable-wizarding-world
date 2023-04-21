@@ -9,10 +9,12 @@ open Feliz.Router
 open State.Store
 open State.Reducers
 open Pages.LoginPage
+open Pages.HomePage
 
 let view (model: Model) (dispatch: Msg -> Unit) =
     let currentPage =
         match model.currentUrl with
+        | ["home"] -> homePage(model, dispatch)
         | [] -> loginPage(model, dispatch)
         | _ ->
             Html.div [
