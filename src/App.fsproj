@@ -18,7 +18,8 @@
     <Compile Include="State\Reducers.fs" />
 
     <Compile Include="Components\Login.fs" />
+
+    <Compile Include="Pages\LoginPage.fs" />
     <Compile Include="App.fs" />
-    <Folder Include="Pages\" />
   </ItemGroup>
 </Project>
