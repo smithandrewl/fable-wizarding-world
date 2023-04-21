@@ -25,17 +25,29 @@ let update msg (model: Model) =
         {
             model with
                 loginSection =
-                    { model.loginSection with username = username; password = password }
+                    {
+                        model.loginSection with
+                            username = username; password = password
+                    }
         }, Cmd.none
     | LoginSubmission ->
         if model.loginSection.username = "a" && model.loginSection.password = "a" then
             {
-                model with loginSection = { model.loginSection with state = LoginState.LoginSucceeded }
+                model with
+                    loginSection = {
+                        model.loginSection with
+                            state = LoginState.LoginSucceeded
+                    }
                 
             }, Cmd.ofMsg LoginSucceeded
         else
             {
-                model with loginSection = { model.loginSection with state = LoginState.LoginFailed }
+                model with
+                    loginSection = {
+                        model.loginSection with
+                            state = LoginState.LoginFailed
+                    }
             }, Cmd.ofMsg LoginFailed
     | UrlChanged(page) -> { model with currentUrl =  page }, Cmd.none
     | LoginSucceeded -> model, Cmd.navigate("home")
+    | LoginFailed -> model, Cmd.none
