@@ -3,14 +3,7 @@ module State.Reducers
 open State.Store
 open Elmish
 
-open Elmish
-open Elmish.React
-
-open Feliz
 open Feliz.Router
-
-open State.Store
-
 
 type Msg =
     | LoginFormUpdated of string * string
@@ -49,5 +42,5 @@ let update msg (model: Model) =
                     }
             }, Cmd.ofMsg LoginFailed
     | UrlChanged(page) -> { model with currentUrl =  page }, Cmd.none
-    | LoginSucceeded -> model, Cmd.navigate("home")
-    | LoginFailed -> model, Cmd.none
+    | LoginSucceeded   -> model,                             Cmd.navigate("home")
+    | LoginFailed      -> model,                             Cmd.none
